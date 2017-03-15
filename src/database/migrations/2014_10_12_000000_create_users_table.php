@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+
+/**
+ * Create or Drop users table.
+ *
+ * Class CreateUsersTable
+ */
 class CreateUsersTable extends Migration
 {
     /**
@@ -13,6 +19,9 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
+        /**
+         * Setup users table.
+         */
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -30,6 +39,9 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        /**
+         * Drop users.
+         */
         Schema::dropIfExists('users');
     }
 }
