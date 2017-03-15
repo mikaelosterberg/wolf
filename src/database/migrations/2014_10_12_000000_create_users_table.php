@@ -24,11 +24,15 @@ class CreateUsersTable extends Migration
          */
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->string('name', 30); // Name
+            $table->string('slug', 20)->unique(); // URL safe name
+            $table->string('profile', 200)->nullAble()->default('null'); // Profile text
+            $table->string('location', 255)->nullAble()->default('null'); // Location
+            $table->string('email', 255)->unique(); // Email address used for auth.
+            $table->string('password', 255); // Password field.
+            $table->rememberToken(); // Login remember token.
+            $table->timestamps(); // Common timestamps.
+            $table->softDeletes(); // SoftDelete timestamps, date = deleted.
         });
     }
 
