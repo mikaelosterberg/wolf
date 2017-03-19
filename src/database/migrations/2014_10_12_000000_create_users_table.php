@@ -26,8 +26,8 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name', 30); // Name
             $table->string('slug', 20)->unique(); // URL safe name
-            $table->string('profile', 200)->nullAble()->default('null'); // Profile text
-            $table->string('location', 255)->nullAble()->default('null'); // Location
+            $table->string('profile', 200)->nullable(); // Profile text
+            $table->string('location', 255)->nullable(); // Location
             $table->string('email', 255)->unique(); // Email address used for auth.
             $table->string('password', 255); // Password field.
             $table->rememberToken(); // Login remember token.
