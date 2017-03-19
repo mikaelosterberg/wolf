@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'slug', 'profile', 'location', 'email', 'password'
+        'name', 'username', 'profile', 'location', 'email', 'password'
     ];
 
     /**
@@ -30,4 +30,19 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    /**
+     * Create user in the database
+     *
+     * @param array $data
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public static function register(array $data)
+    {
+        // Hash the password, use php preferred defaults.
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        return User::create($data);
+    }
+
 }

@@ -11,6 +11,23 @@
 |
 */
 
-Auth::routes();
+// Custom register
+Route::get('/register','RegisterController@create')->name('register:form');
+Route::post('/register','RegisterController@store')->name('register');
 
-Route::get('/home', 'HomeController@index');
+// Custom auth
+Route::get('/login','AuthController@create')->name('login');
+Route::post('/login','AuthController@store')->name('auth');
+Route::get('/logout','AuthController@destroy')->name('logout');
+Route::get('/me','AuthController@show')->name('me');
+
+// Default password reset.
+Route::group(['middleware' => 'guest', 'prefix' => 'password', 'namespace' => 'Auth'], function () {
+    Route::post('/email','ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('/reset','ResetPasswordController@reset');
+    Route::get('/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+});
+
+// Home controller, placeholder.
+Route::get('/home', 'HomeController@index')->name('home');

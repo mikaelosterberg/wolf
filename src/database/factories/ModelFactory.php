@@ -13,15 +13,13 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\User::class, function (Faker\Generator $faker) {
-    static $password;
-
     return [
-        'name' => $faker->jobTitle . " " . $faker->name,
-        'slug' => $faker->slug,
+        'name' => $faker->name,
+        'username' => $faker->unique()->userName,
         'profile' => $faker->jobTitle,
-        'location' => $faker->sentences(3),
+        'location' => $faker->city,
         'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
+        'password' => bcrypt(str_random(10)),
+        'remember_token' => str_random(100),
     ];
 });
