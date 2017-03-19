@@ -27,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        /**
+         * Register IDE helper framework only in none production environment.
+         */
+        if ($this->app->environment() !== 'production') {
+            // Use full namespace to minimise production footprint.
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
     }
 }
