@@ -50,7 +50,7 @@ class RegisterController extends Controller
      */
     public function store(RegisterRequest $request)
     {
-        $request->presist();
+        $request->persist();
         return redirect()->route('me');
     }
 }

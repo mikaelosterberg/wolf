@@ -41,7 +41,7 @@ class RegisterRequest extends FormRequest
     }
 
 
-    public function presist()
+    public function persist()
     {
         $user = User::register($this->only(['name', 'username', 'profile', 'location', 'email', 'password']));
         auth()->login($user);
