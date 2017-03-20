@@ -70,4 +70,14 @@ class User extends Authenticatable
         return User::create($data);
     }
 
+
+    /**
+     * One User can have many Howls. ORM mapping helper function.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function Howl()
+    {
+        return $this->hasMany(Howl::class);
+    }
 }

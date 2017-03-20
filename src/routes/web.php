@@ -29,5 +29,16 @@ Route::group(['middleware' => 'guest', 'prefix' => 'password', 'namespace' => 'A
     Route::get('/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
 });
 
+// Default password reset.
+Route::group(['middleware' => 'guest', 'prefix' => 'password', 'namespace' => 'Auth'], function () {
+    Route::post('/email','ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('/reset','ResetPasswordController@reset');
+    Route::get('/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+});
+
+// Crud routing the Howl controller
+Route::resource('howl', 'HowlController');
+
 // Home controller, placeholder.
 Route::get('/home', 'HomeController@index')->name('home');

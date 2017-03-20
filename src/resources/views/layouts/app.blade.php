@@ -20,6 +20,11 @@
 <a href="{{ route('logout') }}">Logout</a>
 @endif
 </p>
+<p>
+    <a href="{{ route('howl.index') }}">Show Howl</a>
+    <a href="{{ route('howl.create') }}">New Howl</a>
+
+</p>
 @yield('content')
 <script src="{{ asset('js/app.js') }}"></script>
 </body>
