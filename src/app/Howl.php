@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\User;
+use Parser;
 
 /**
  * App\Howl
@@ -47,7 +47,7 @@ class Howl extends Model
     }
 
     /**
-     * Create a new Howl in the database table.
+     * Create a new Howl in the database.
      *
      * @param $userId
      * @param $howl
@@ -56,17 +56,58 @@ class Howl extends Model
     public static function PostHowl($userId, $howl)
     {
         $data = array_merge($howl, ['user_id' => $userId]);
+        $data['cache'] = Parser::Gethtml($howl['howl']);
         return Howl::create($data);
     }
 
     /**
      * @param int $limit
-     * @param int $offset
      * @param null $user
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function GetList($limit = 100, $offset = 0, $user = null)
+    public static function GetList($limit = 25, $user = null)
     {
+        /**
+         * Hard upper limit of 100.
+         */
+        if($limit >= 100)
+        {
+            $limit = 100;
+        }
+        /**
+         * Start ORM query. Paginate by limit and order by created_at, last date first, if we have user limit by user.
+         */
+        $howl = Howl::orderBy('created_at', 'DESC');
+        if($user !== null)
+        {
+            /**
+             * If i get an User Object extract id
+             * Else User is an positive numeric.
+             * Add user limitation to result.
+             */
+            if($user instanceof User)
+            {
+                $howl->where('user_id' ,'=',$user->id);
+            }elseif ( (is_numeric($user)) && ($user < 0) ) {
+                $howl->where('user_id' ,'=',$user);
+            }
+        }
 
+        /**
+         * Return paginated howls.
+         */
+        return $howl->paginate($limit);
+    }
+
+    /**
+     * Get one Howl by ID
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function getHowl($id)
+    {
+        return Howl::find($id);
     }
 
 

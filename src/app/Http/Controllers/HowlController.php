@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Howl;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\HowlRequest;
 
@@ -30,7 +31,23 @@ class HowlController extends Controller
      */
     public function index()
     {
-        return view('howl.index');
+        $howls = Howl::GetList();
+        return view('howl.index', compact('howls'));
+    }
+
+    /**
+     * @param $user
+     * @param int $limit
+     * @param int $offset
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function indexUser($user, $limit=100)
+    {
+        // Throw 404 if unknown user.
+        $userId = User::where("username","=",$user)->firstOrFail();
+        // Get a list of howls.
+        $howls = Howl::GetList($limit, $userId);
+        return view('howl.index', compact('howls'));
     }
 
     /**
@@ -63,30 +80,7 @@ class HowlController extends Controller
      */
     public function show(Howl $howl)
     {
-        return view('howl.show', compact($howl));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Howl  $howl
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Howl $howl)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Howl  $howl
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Howl $howl)
-    {
-        //
+        return view('howl.show', compact('howl'));
     }
 
     /**
@@ -97,7 +91,11 @@ class HowlController extends Controller
      */
     public function destroy(Howl $howl)
     {
-        $howl->delete()->save();
-        return redirect()->route('home');
+        if (auth()->user()->id == $howl->user_id) {
+
+            $howl->delete();
+            return redirect()->route('home');
+        }
+        abort(403, 'Unauthorized action.');
     }
 }

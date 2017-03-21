@@ -2,9 +2,10 @@
 
 @section('content')
     <form method="POST" action="{{ route('howl.store') }}">{{ csrf_field() }}
-        Your Howl: <input type="text" name="howl" value="{{ old('howl') }}" required autofocus>
+        Your Howl: <input type="text" name="howl" value="{{ old('howl') }}" maxlength="160" required autofocus>
         @if ($errors->has('howl'))
             <strong>{{ $errors->first('howl') }}</strong>
-    @endif
+        @endif
+        <button type="submit">Howl</button>
     </form>
 @endsection

@@ -15,8 +15,8 @@ namespace App\Parsers;
 class Parser
 {
 
-    public function getHtml()
+    public function getHtml($text)
     {
-        return 'html';
+        return "<span>" . $text . "</span>";
     }
 }

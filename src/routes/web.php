@@ -37,8 +37,12 @@ Route::group(['middleware' => 'guest', 'prefix' => 'password', 'namespace' => 'A
     Route::get('/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
 });
 
-// Crud routing the Howl controller
-Route::resource('howl', 'HowlController');
+// Crud routing the Howl controller, Do not route for update and edit.
+Route::resource('howl', 'HowlController', ['except' => ['edit', 'update']]);
 
 // Home controller, placeholder.
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+
+Route::get('/{name}/{limit?}', 'HowlController@indexUser')->name('howl.user');
