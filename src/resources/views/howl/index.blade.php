@@ -1,7 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-    {!! var_dump($howls) !!}
+
+    @if (auth()->user()->id != $user->id)
+        <form method="POST" action="{{ route('follow.toggle', ['name'=>$user->username]) }}">{{ csrf_field() }}
+            @if ($follows)
+                <button type="submit">Un Follow</button>
+            @else
+                <button type="submit">Follow</button>
+            @endif
+        </form>
+    @endif
+
     @foreach ($howls as $howl)
         <p>
         {{ $howl->user->name }} @ {{ $howl->created_at }}<br>

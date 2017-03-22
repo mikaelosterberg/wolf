@@ -76,8 +76,29 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function Howl()
+    public function howl()
     {
         return $this->hasMany(Howl::class);
+    }
+
+    /**
+     * ORM mapping helper function.
+     * The user that follow
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function follow(){
+        return $this->hasMany(Follower::class, 'user_id', 'id');
+    }
+
+    /**
+     * ORM mapping helper function.
+     * The user that followed
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function followers()
+    {
+        return $this->hasMany(Follower::class, 'follow_id', 'id');
     }
 }

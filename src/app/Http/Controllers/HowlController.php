@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Howl;
 use App\User;
+use App\Follower;
 use Illuminate\Http\Request;
 use App\Http\Requests\HowlRequest;
 
@@ -21,39 +22,29 @@ class HowlController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth');
     }
 
     /**
-     * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $howls = Howl::GetList();
-        return view('howl.index', compact('howls'));
-    }
-
-    /**
-     * @param $user
-     * @param int $limit
-     * @param int $offset
+     *
+     * @param $username
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function indexUser($user, $limit=100)
+    public function index($username)
     {
         // Throw 404 if unknown user.
-        $userId = User::where("username","=",$user)->firstOrFail();
+        $user = User::where("username","=",$username)->firstOrFail();
         // Get a list of howls.
-        $howls = Howl::GetList($limit, $userId);
-        return view('howl.index', compact('howls'));
+        $howls = Howl::getList($user);
+        $follows = Follower::isFollowing(auth()->user()->id, $user->id);
+        return view('howl.index', compact('howls', 'user', 'follows'));
     }
 
     /**
-     * Show the form for creating a new howl.
+     * Display the create howl form.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -61,7 +52,7 @@ class HowlController extends Controller
     }
 
     /**
-     * Store form data and redirect to show the howl.
+     * Persist the howl to database.
      *
      * @param HowlRequest $howlRequest
      * @return \Illuminate\Http\RedirectResponse
@@ -69,14 +60,14 @@ class HowlController extends Controller
     public function store(HowlRequest $howlRequest)
     {
         $howl = $howlRequest->persist();
-        return redirect()->route('howl.show', ['id' => $howl->id]);
+        return redirect()->route('howl.index');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified howl.
      *
-     * @param  \App\Howl  $howl
-     * @return \Illuminate\Http\Response
+     * @param Howl $howl
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(Howl $howl)
     {
@@ -84,17 +75,17 @@ class HowlController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified howl from database.
      *
-     * @param  \App\Howl  $howl
-     * @return \Illuminate\Http\Response
+     * @param Howl $howl
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Howl $howl)
     {
         if (auth()->user()->id == $howl->user_id) {
 
             $howl->delete();
-            return redirect()->route('home');
+            return redirect()->route('howl.index');
         }
         abort(403, 'Unauthorized action.');
     }

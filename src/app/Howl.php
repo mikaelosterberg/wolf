@@ -42,7 +42,7 @@ class Howl extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function User(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
 
@@ -53,7 +53,7 @@ class Howl extends Model
      * @param $howl
      * @return Model
      */
-    public static function PostHowl($userId, $howl)
+    public static function postHowl($userId, $howl)
     {
         $data = array_merge($howl, ['user_id' => $userId]);
         $data['cache'] = Parser::Gethtml($howl['howl']);
@@ -61,19 +61,13 @@ class Howl extends Model
     }
 
     /**
-     * @param int $limit
-     * @param null $user
+     * Retrieve a list of howls by $user.
+     *
+     * @param null|int|\App\User $user
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public static function GetList($limit = 25, $user = null)
+    public static function getList($user = null)
     {
-        /**
-         * Hard upper limit of 100.
-         */
-        if($limit >= 100)
-        {
-            $limit = 100;
-        }
         /**
          * Start ORM query. Paginate by limit and order by created_at, last date first, if we have user limit by user.
          */
@@ -96,7 +90,7 @@ class Howl extends Model
         /**
          * Return paginated howls.
          */
-        return $howl->paginate($limit);
+        return $howl->paginate(50);
     }
 
     /**
