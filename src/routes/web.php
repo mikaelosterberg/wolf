@@ -19,7 +19,6 @@ Route::post('/register','RegisterController@store')->name('register');
 Route::get('/login','AuthController@create')->name('login');
 Route::post('/login','AuthController@store')->name('auth');
 Route::get('/logout','AuthController@destroy')->name('logout');
-Route::get('/me','AuthController@show')->name('me');
 
 // Default password reset.
 Route::group(['middleware' => 'guest', 'prefix' => 'password', 'namespace' => 'Auth'], function () {
@@ -29,5 +28,18 @@ Route::group(['middleware' => 'guest', 'prefix' => 'password', 'namespace' => 'A
     Route::get('/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
 });
 
-// Home controller, placeholder.
-Route::get('/home', 'HomeController@index')->name('home');
+// Default password reset.
+Route::group(['middleware' => 'auth'], function () {
+
+    // Crud routing the Howl controller, Do not route for update and edit.
+    Route::resource('howl', 'HowlController', ['except' => ['edit', 'update']]);
+
+    Route::post('/{name}/follow', 'FollowerController@toggle')->name('follow.toggle');
+    Route::get('/{name}/following', 'FollowerController@following')->name('follower.following');
+    Route::get('/{name}/followers', 'FollowerController@followers')->name('follower.followers');
+    Route::get('/{name}/{limit?}', 'HowlController@indexUser')->name('howl.user');
+
+});
+
+// Home, Index page.
+Route::get('/', 'HomeController@index')->name('home');

@@ -16,9 +16,19 @@
     <a href="{{ route('login') }}">Login</a><br>
     <a href="{{ route('register') }}">Register</a>
 @else
-<a href="#">{{ Auth::user()->name }}</a><br>
-<a href="{{ route('logout') }}">Logout</a>
+<a href="{{ route('howl.user', ['name' => auth()->user()->username]) }}">{{ auth()->user()->name }}</a>|
+<a href="{{ route('follower.following', ['name' => auth()->user()->username]) }}">Following</a>|
+<a href="{{ route('follower.followers', ['name' => auth()->user()->username]) }}">Followers</a>
+       <br> <a href="{{ route('logout') }}">Logout</a>
 @endif
+</p>
+<p>
+    <a href="{{ route('howl.index') }}">Show Howls</a>
+    @if (!Auth::guest())
+    <a href="{{ route('howl.user', ['name' => auth()->user()->username]) }}">Show My Howls</a>
+    @endif
+    <a href="{{ route('howl.create') }}">New Howl</a>
+
 </p>
 @yield('content')
 <script src="{{ asset('js/app.js') }}"></script>

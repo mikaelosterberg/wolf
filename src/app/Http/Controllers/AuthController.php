@@ -39,17 +39,10 @@ class AuthController extends Controller
     {
         if(auth()->attempt(request(['email','password'])))
         {
-            return redirect()->route('me');
+            return redirect()->route('howl.user', ['name' => auth()->user()->username]);
         }
         return redirect()->back();
     }
-
-
-    public function show()
-    {
-        dd(auth()->user(), redirect()->route('me'));
-    }
-
 
     /**
      * Logout current session.

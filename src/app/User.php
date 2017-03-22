@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable; // Base class.
 
 /**
  * Class User
@@ -70,4 +70,35 @@ class User extends Authenticatable
         return User::create($data);
     }
 
+
+    /**
+     * One User can have many Howls. ORM mapping helper function.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function howl()
+    {
+        return $this->hasMany(Howl::class);
+    }
+
+    /**
+     * ORM mapping helper function.
+     * The user that follow
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function follow(){
+        return $this->hasMany(Follower::class, 'user_id', 'id');
+    }
+
+    /**
+     * ORM mapping helper function.
+     * The user that followed
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function followers()
+    {
+        return $this->hasMany(Follower::class, 'follow_id', 'id');
+    }
 }

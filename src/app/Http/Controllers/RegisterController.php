@@ -50,7 +50,7 @@ class RegisterController extends Controller
      */
     public function store(RegisterRequest $request)
     {
-        $request->presist();
-        return redirect()->route('me');
+        $request->persist();
+        return redirect()->route('howl.user', ['name' => auth()->user()->username]);
     }
 }
