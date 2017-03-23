@@ -32,12 +32,12 @@ Route::group(['middleware' => 'guest', 'prefix' => 'password', 'namespace' => 'A
 Route::group(['middleware' => 'auth'], function () {
 
     // Crud routing the Howl controller, Do not route for update and edit.
-    Route::resource('howl', 'HowlController', ['except' => ['edit', 'update']]);
+    Route::resource('howl', 'HowlController', ['except' => ['edit', 'update', 'show']]);
 
     Route::post('/{name}/follow', 'FollowerController@toggle')->name('follow.toggle');
     Route::get('/{name}/following', 'FollowerController@following')->name('follower.following');
     Route::get('/{name}/followers', 'FollowerController@followers')->name('follower.followers');
-    Route::get('/{name}/{limit?}', 'HowlController@indexUser')->name('howl.user');
+    Route::get('/{name}', 'HowlController@index')->name('howl.user');
 
 });
 
