@@ -26,8 +26,6 @@ class HowlController extends Controller
     }
 
     /**
-     *
-     *
      * @param $username
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -59,19 +57,21 @@ class HowlController extends Controller
      */
     public function store(HowlRequest $howlRequest)
     {
-        $howl = $howlRequest->persist();
-        return redirect()->route('howl.index');
-    }
-
-    /**
-     * Display the specified howl.
-     *
-     * @param Howl $howl
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function show(Howl $howl)
-    {
-        return view('howl.show', compact('howl'));
+        $howlRequest->persist();
+        $all = $howlRequest->all();
+        if(array_key_exists('next', $all))
+        {
+            switch ($all['next'])
+            {
+                case 'home':
+                    return redirect()->route('home');
+                    break;
+                case 'me':
+                    return redirect()->route('howl.user', ['name' => auth()->user()->username]);
+                    break;
+            }
+        }
+        return redirect()->route('home');
     }
 
     /**
@@ -85,7 +85,7 @@ class HowlController extends Controller
         if (auth()->user()->id == $howl->user_id) {
 
             $howl->delete();
-            return redirect()->route('howl.index');
+            return redirect()->route('home');
         }
         abort(403, 'Unauthorized action.');
     }

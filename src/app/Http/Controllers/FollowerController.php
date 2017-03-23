@@ -31,7 +31,7 @@ class FollowerController extends Controller
     {
         $user = User::where("username","=",$username)->firstOrFail();
         $followings = $user->follow()->paginate(50);
-        return view('follower.following', compact('followings'));
+        return view('follower.following', compact('followings', 'user'));
     }
 
     /**
@@ -44,7 +44,7 @@ class FollowerController extends Controller
     {
         $user = User::where("username","=",$username)->firstOrFail();
         $followers = $user->followers()->paginate(50);
-        return view('follower.followers', compact('followers'));
+        return view('follower.followers', compact('followers', 'user'));
     }
 
     /**
