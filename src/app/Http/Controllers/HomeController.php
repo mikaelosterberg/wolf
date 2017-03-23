@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Howl;
+use App\Follower;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if(auth()->guest()) {
+            return view('home');
+        }else{
+            $user = auth()->user();
+            $howls = Howl::getFollowingList();
+            $follows = Follower::isFollowing(auth()->user()->id, $user->id);
+            return view('howl.home', compact('howls', 'user', 'follows'));
+        }
     }
 }

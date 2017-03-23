@@ -61,6 +61,23 @@ class Howl extends Model
     }
 
     /**
+     * Retrieve a list of howls by current users follows users.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public static function getFollowingList()
+    {
+        // Current user.
+        $user = \Auth::user()->id;
+        $howls = Howl::select('howls.*')
+                    ->join('followers','followers.follow_id','howls.user_id')
+                    ->where('followers.user_id', '=', $user)
+                    ->orderBy('howls.created_at', 'DESC')
+                    ->paginate(50);
+        return $howls;
+    }
+
+    /**
      * Retrieve a list of howls by $user.
      *
      * @param null|int|\App\User $user
