@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <p>follower.following</p>
-
-    @foreach($followings as $following)
-        @include('partials.user', ['user' => $following->follower()->first()])
+    <h4>Users that follow {{ $user->name }}</h4>
+    @foreach($followings->chunk(4) as $collection)
+        <div class="row">
+            @foreach($collection as $following)
+                @include('partials.user', ['user' => $following->follower()->first()])
+            @endforeach
+        </div>
     @endforeach
-
-
-
 @endsection
+

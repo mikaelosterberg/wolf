@@ -16,8 +16,9 @@
                 <li><a href="{{ route('login') }}">Login</a></li>
             @else
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><a href="{{ route('howl.user', ['name' => auth()->user()->username]) }}">{{ auth()->user()->name }}</a>| <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->name }} <span class="caret"></span></a>
                     <ul class="dropdown-menu">
+                        <li><a href="{{ route('howl.user', ['name' => auth()->user()->username]) }}">My page</a></li>
                         <li><a href="{{ route('follower.following', ['name' => auth()->user()->username]) }}">My following</a></li>
                         <li><a href="{{ route('follower.followers', ['name' => auth()->user()->username]) }}">My followers</a></li>
                         <li role="separator" class="divider"></li>
