@@ -7,7 +7,9 @@
                     {{ $user->profile }}<br>
                     {{ $user->location }}
                 </p>
-
+                <small><a href="{{ route('follower.following', ['name' => $user->username]) }}">Following</a>
+                &nbsp;|&nbsp;
+                <a href="{{ route('follower.followers', ['name' => $user->username]) }}">Followers</a></small>
             </div>
         </div>
     </div>

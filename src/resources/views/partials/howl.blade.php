@@ -5,7 +5,11 @@
         </div>
         <div class="media-body">
             <h5 class="media-heading"><a href="{{ route('howl.user', ['name' => $howl->user->username]) }}">{{ $howl->user->name }}</a>
-                <small><a href="{{ route('howl.user', ['name' => $howl->user->username]) }}">{{ "@" . $howl->user->username }}</a> on {{ $howl->created_at  }}</small></h5>
+                <small><a href="{{ route('howl.user', ['name' => $howl->user->username]) }}">{{ "@" . $howl->user->username }}</a> on {{ $howl->created_at  }}
+                     <a href="{{ route('follower.following', ['name' => $user->username]) }}">Following</a>
+                        &nbsp;|&nbsp;
+                        <a href="{{ route('follower.followers', ['name' => $user->username]) }}">Followers</a>
+                </small></h5>
             <p>
                 @if (empty($howl->cache))
                     {{-- If cache is missing run it thrue the parcer. --}}
