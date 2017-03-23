@@ -1,10 +1,10 @@
 @component('mail::message')
-# Introduction
+# Welcome to Wolf
 
-The body of your message.
+Thank you for registering to access toy account click the button below.
 
-@component('mail::button', ['url' => ''])
-Button Text
+@component('mail::button', ['url' => route('home')])
+Enter Wolf
 @endcomponent
 
 Thanks,<br>
